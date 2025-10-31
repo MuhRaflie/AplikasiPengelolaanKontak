@@ -1,5 +1,13 @@
- 
-// Method untuk mengambil semua data kontak di tabel 
+package model;
+
+
+import database.DatabaseConnection; 
+import java.sql.*; 
+import java.util.ArrayList; 
+import java.util.List; 
+
+public class KontakDAO{
+    // Method untuk mengambil semua data kontak di tabel 
 public List<Kontak> getAllContacts() throws SQLException { 
     List<Kontak> contacts = new ArrayList<>(); 
     String sql = "SELECT * FROM contacts"; 
@@ -20,8 +28,7 @@ public List<Kontak> getAllContacts() throws SQLException {
      
 // Method untuk menambahkan kontak ke tabel 
 public void addContact(Kontak contact) throws SQLException { 
-    String sql = "INSERT INTO contacts (nama, nomor_telepon, kategori) 
-VALUES (?, ?, ?)"; 
+    String sql = "INSERT INTO contacts (nama, nomor_telepon, kategori) VALUES (?, ?, ?)"; 
     try (Connection conn = DatabaseConnection.getConnection(); 
          PreparedStatement pstmt = conn.prepareStatement(sql)) { 
         pstmt.setString(1, contact.getNama()); 
@@ -33,8 +40,7 @@ VALUES (?, ?, ?)";
  
 // Method untuk mengupdate kontak ke tabel 
 public void updateContact(Kontak contact) throws SQLException { 
-    String sql = "UPDATE contacts SET nama = ?, nomor_telepon = ?, 
-kategori = ? WHERE id = ?"; 
+    String sql = "UPDATE contacts SET nama = ?, nomor_telepon = ?, kategori = ? WHERE id = ?"; 
     try (Connection conn = DatabaseConnection.getConnection(); 
          PreparedStatement pstmt = conn.prepareStatement(sql)) { 
         pstmt.setString(1, contact.getNama()); 
@@ -58,8 +64,7 @@ public void deleteContact(int contactId) throws SQLException {
 // Method untuk mencari kontak di tabel 
 public List<Kontak> searchContacts(String keyword) throws SQLException { 
     List<Kontak> contacts = new ArrayList<>(); 
-    String sql = "SELECT * FROM contacts WHERE nama LIKE ? OR 
-nomor_telepon LIKE ?"; 
+    String sql = "SELECT * FROM contacts WHERE nama LIKE ? OR nomor_telepon LIKE ?"; 
     try (Connection conn = DatabaseConnection.getConnection(); 
          PreparedStatement pstmt = conn.prepareStatement(sql)) { 
         pstmt.setString(1, "%" + keyword + "%"); 
@@ -92,9 +97,9 @@ excludeId) throws SQLException {
         } 
         ResultSet rs = pstmt.executeQuery(); 
         if (rs.next()) { 
-            return rs.getInt(1) > 0; // Jika COUNT > 0, berarti nomor 
-telepon sudah ada 
+            return rs.getInt(1) > 0; // Jika COUNT > 0, berarti nomor telepon sudah ada 
         } 
     } 
     return false; 
 } 
+}
